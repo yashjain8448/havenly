@@ -77,8 +77,6 @@ app.use(
     { name: "homeBrochurePath", maxCount: 1 },
   ])
 );
-app.use("/uploads/homeImages", express.static(path.join(rootDir, "uploads/homeImages")));
-app.use("/uploads/homeBrochures", express.static(path.join(rootDir, "uploads/homeBrochures")));
 app.use("/host/uploads", express.static(path.join(rootDir, "uploads")));
 app.use("/homes/uploads", express.static(path.join(rootDir, "uploads")));
 

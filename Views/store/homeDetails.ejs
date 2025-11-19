@@ -61,7 +61,7 @@
           <p class="text-gray-700 text-xl font-medium"><%= home.rating %> / 5 ⭐</p>
         </div>
 
-              <!-- Download Brochure -->
+            <!-- Download Brochure -->
       <div class="bg-white rounded-xl p-6 shadow-md mt-10 border-l-4 border-blue-500">
 
         <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
@@ -72,13 +72,15 @@
         </h3>
 
         <a 
-          href="/homes/<%= home._id %>/brochure"
+          href="<%= home.homeBrochurePath %>?fl_attachment=true"
           class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition font-medium"
+          target="_blank"
         >
           📥 Download Brochure
         </a>
 
       </div>
+
 
         <!-- Favourite Button -->
         <div class="bg-white rounded-xl p-6 shadow-md">

@@ -97,14 +97,6 @@ exports.postEditHome = (req, res, next) => {
 
       // update image
       if (newImage) {
-        const oldImage = home.homeImage;
-        if (oldImage && fs.existsSync(oldImage)) {
-          try {
-            fs.unlinkSync(oldImage);
-          } catch (err) {
-            console.log("Delete old image error:", err);
-          }
-        }
         home.homeImage = newImage.path;
       }
 
