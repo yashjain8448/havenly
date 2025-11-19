@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "App.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
+    "start": "node App.js",
+    "dev": "nodemon App.js",
     "build:css": "tailwindcss -i ./Views/input.css -o ./public/output.css"
   },
   "author": "",
@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^1.41.3",
     "connect-mongodb-session": "^5.0.0",
     "dotenv": "^17.2.3",
     "ejs": "^3.1.10",
@@ -21,6 +22,7 @@
     "mongodb": "^7.0.0",
     "mongoose": "^8.19.3",
     "multer": "^2.0.2",
+    "multer-storage-cloudinary": "^4.0.0",
     "mysql2": "^3.15.3"
   },
   "devDependencies": {

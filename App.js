@@ -5,6 +5,9 @@ const express = require("express");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const multer = require("multer");
+const cloudinary = require("./config/cloudinary");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
 
 // Local Modules
 const hostRouter = require("./routes/hostRouter");
@@ -26,19 +29,25 @@ const store = new MongoDBStore({
 app.set("view engine", "ejs"); // to embeed ejs into our project
 app.set("views", "Views");
 
-const storage = multer.diskStorage({
-  // where the image and file is gona stored
-  destination: function (req, file, cb) {
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    let folderName = "Havenly";
+
     if (file.mimetype === "application/pdf") {
-      cb(null, "uploads/homeBrochures/");
+      folderName = "Havenly/Brochures";
     } else {
-      cb(null, "uploads/homeImages/");
+      folderName = "Havenly/Images";
     }
-  },
-  filename: function (req, file, cb) {
-    cb(null, getRandomString(10) + "-" + file.originalname);
+
+    return {
+      folder: folderName,
+      format: file.mimetype.split("/")[1],
+      public_id: `${Date.now()}-${file.originalname}`,
+    };
   },
 });
+
 
 // to ensure on backend as well that only images are uploaded
 const fileFilter = (req, file, cb) => {
