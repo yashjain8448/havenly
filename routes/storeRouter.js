@@ -17,6 +17,4 @@ storeRouter.post(
   storeController.postDeleteFromFavourites
 );
 
-storeRouter.get("/homes/:homeID/brochure", storeController.getHomeBrochure);
-
 module.exports = storeRouter;

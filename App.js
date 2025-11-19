@@ -32,21 +32,25 @@ app.set("views", "Views");
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
-    let folderName = "Havenly";
 
-    if (file.mimetype === "application/pdf") {
-      folderName = "Havenly/Brochures";
-    } else {
-      folderName = "Havenly/Images";
-    }
+    // Detect file type
+    const isPDF = file.mimetype === "application/pdf";
 
     return {
-      folder: folderName,
-      format: file.mimetype.split("/")[1],
-      public_id: `${Date.now()}-${file.originalname}`,
+      folder: isPDF ? "Havenly/Brochures" : "Havenly/Images",
+      
+      // IMPORTANT: PDFs must be 'raw', images remain 'image'
+      resource_type: isPDF ? "raw" : "image",
+
+      // Remove accidental double-extension
+      public_id: `${Date.now()}_${file.originalname.replace(/\.[^/.]+$/, "")}`,
+
+      // Set format correctly
+      format: isPDF ? "pdf" : file.mimetype.split("/")[1],
     };
   },
 });
+
 
 
 // to ensure on backend as well that only images are uploaded

@@ -95,22 +95,3 @@ exports.postDeleteFromFavourites = async (req, res, next) => {
   res.redirect("/favourites");
 };
 
-exports.getHomeBrochure = [
-  
-  (req, res, next) => {
-    if(!req.session.isLoggedIn){
-      return res.redirect('/auth/login');
-    }
-    next();
-  },
-  
-  (req, res, next) => {
-  const homeID = req.params.homeID; 
-  Home.findById(homeID).then((home) => {
-    if (!home || !home.homeBrochurePath) {
-      console.log("Brochure not found");
-      return res.redirect("/homes");
-    }
-    return res.download(home.homeBrochurePath, ""+home.houseName+"_Brochure.pdf");
-  }); 
-}];
