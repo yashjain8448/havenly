@@ -1,0 +1,86 @@
+<header class="bg-red-500 text-white py-2 px-4 shadow-md">
+  <nav class="container mx-auto flex justify-between items-center">
+    <ul class="flex space-x-1 items-center">
+      <li>
+        <a
+          href="/"
+          class="py-1.5 px-3 rounded transition duration-300 hover:bg-red-400 <%= currentPage === 'Home' ? '!bg-red-400' : '' %> flex items-center gap-1.5 text-base"
+          >🏠 Havenly</a
+        >
+      </li>
+
+      <% if(isLoggedIn) {%> <% if(user && user.userType === 'guest') {%>
+      <li>
+        <a
+          href="/homes"
+          class="py-1.5 px-3 rounded transition duration-300 hover:bg-red-400 <%= currentPage === 'homesList' ? '!bg-red-400' : '' %> flex items-center gap-1.5 text-base"
+          >🏢 Homes</a
+        >
+      </li>
+
+      <li>
+        <a
+          href="/bookings"
+          class="py-1.5 px-3 rounded transition duration-300 hover:bg-red-400 <%= currentPage === 'bookings' ? '!bg-red-400' : '' %> flex items-center gap-1.5 text-base"
+          >📅 Bookings</a
+        >
+      </li>
+
+      <li>
+        <a
+          href="/favourites"
+          class="py-1.5 px-3 rounded transition duration-300 hover:bg-red-400 <%= currentPage === 'favourites' ? '!bg-red-400' : '' %> flex items-center gap-1.5 text-base"
+          >❤️ Favorites</a
+        >
+      </li>
+      <% } else { %>
+      <li>
+        <a
+          href="/host/host-homes-list"
+          class="py-1.5 px-3 rounded transition duration-300 hover:bg-red-400 <%= currentPage === 'hostHomesList' ? '!bg-red-400' : '' %> flex items-center gap-1.5 text-base"
+          >🏠 My Properties</a
+        >
+      </li>
+
+      <li>
+        <a
+          href="/host/add-home"
+          class="py-1.5 px-3 rounded transition duration-300 hover:bg-red-400 <%= currentPage === 'Add Home' ? '!bg-red-400' : '' %> flex items-center gap-1.5 text-base"
+          >➕ Add</a
+        >
+      </li>
+      <% } %> <% } %>
+    </ul>
+
+    <ul class="flex space-x-1 items-center">
+      <%if(!isLoggedIn) {%>
+      <li>
+        <a
+          href="/login"
+          class="py-1.5 px-3 rounded transition duration-300 hover:bg-red-400 <%= currentPage === 'login' ? '!bg-red-400' : '' %> flex items-center gap-1.5 text-base"
+          >🔐 Login</a
+        >
+      </li>
+
+      <li>
+        <a
+          href="/signup"
+          class="py-1.5 px-3 rounded transition duration-300 hover:bg-red-400 <%= currentPage === 'signup' ? '!bg-red-400' : '' %> flex items-center gap-1.5 text-base"
+          >📝 Sign Up</a
+        >
+      </li>
+
+      <% } else {%>
+      <li>
+        <form action="/logout" method="POST" class="m-0">
+          <button
+            class="py-1.5 px-3 rounded transition duration-300 hover:bg-red-400 <%= currentPage === 'logout' ? '!bg-red-400' : '' %> flex items-center gap-1.5 text-base"
+          >
+            🚪 Logout
+          </button>
+        </form>
+      </li>
+      <%}%>
+    </ul>
+  </nav>
+</header>

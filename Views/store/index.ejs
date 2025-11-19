@@ -1,0 +1,79 @@
+<%- include('../partials/head') %>
+</head>
+
+<body class="bg-gradient-to-b from-red-500 via-orange-50 to-yellow-50 min-h-screen">
+  <%- include('../partials/nav') %>
+
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-b from-red-500 to-orange-500 text-white py-16 px-4">
+    <div class="container mx-auto text-center">
+      <h1 class="text-5xl font-bold mb-3 drop-shadow-lg">Welcome to Havenly</h1>
+      <p class="text-2xl text-red-100 drop-shadow-md">Find your haven, instantly.</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-12 max-w-7xl">
+    
+    <!-- Section Title -->
+    <div class="mb-12">
+      <h2 class="text-4xl font-bold text-gray-900 mb-2 text-center">Featured Homes</h2>
+      <p class="text-center text-gray-600 text-lg">Discover amazing places to stay</p>
+    </div>
+
+    <!-- Homes Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <% registeredHomes.forEach(home => { %>
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden group border border-gray-100">
+          
+          <!-- Image Container -->
+          <div class="relative overflow-hidden h-56">
+            <img 
+              src="<%= home.homeImage %>"  
+              alt="<%= home.houseName %>" 
+              class="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+            />
+            <div class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
+              Rs <%= home.price %>/night
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="p-6">
+            <!-- Title -->
+            <h3 class="text-lg font-bold text-gray-900 mb-2 truncate"><%= home.houseName %></h3>
+            
+            <!-- Location -->
+            <p class="text-gray-600 text-sm mb-3 flex items-center">
+              <svg class="w-4 h-4 text-red-500 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+              </svg>
+              <span class="truncate"><%= home.location %></span>
+            </p>
+
+            <!-- Description (truncated) -->
+            <p class="text-gray-700 text-sm mb-4 line-clamp-2"><%= home.description %></p>
+
+            <!-- Divider -->
+            <div class="h-px bg-gray-200 mb-4"></div>
+
+            <!-- Rating and Button -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span class="text-gray-900 font-bold"><%= home.rating %></span>
+              </div>
+              <button class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-md hover:shadow-lg active:scale-95">
+                Book Now
+              </button>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+  </main>
+</body>
+</html>

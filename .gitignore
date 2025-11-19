@@ -1,0 +1,6 @@
+node_modules/
+.env
+uploads/homeImages/*
+uploads/homeBrochures/*
+!uploads/homeImages/.gitkeep
+!uploads/homeBrochures/.gitkeep

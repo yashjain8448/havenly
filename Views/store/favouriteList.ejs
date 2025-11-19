@@ -1,0 +1,114 @@
+<%- include('../partials/head') %>
+</head>
+
+<body class="bg-gradient-to-b from-red-500 via-orange-50 to-yellow-50 min-h-screen">
+  <%- include('../partials/nav') %>
+
+  <!-- Hero Section -->
+  <div class="bg-gradient-to-b from-red-500 to-orange-500 text-white py-16 px-4">
+    <div class="container mx-auto text-center">
+      <h1 class="text-5xl font-bold mb-3 drop-shadow-lg">Your Favourites</h1>
+      <p class="text-2xl text-red-100 drop-shadow-md">Homes you love, saved in one place</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-12 max-w-7xl">
+
+    <!-- Section Title -->
+    <div class="mb-12">
+      <h2 class="text-4xl font-bold text-gray-900 mb-2 text-center">
+        Here are your favourites:
+      </h2>
+      <p class="text-center text-gray-600 text-lg">Your saved homes, beautifully displayed</p>
+    </div>
+
+    <!-- Favourite Homes Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+      <% favouriteHomes.forEach(home => { %>
+
+        <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden border border-gray-200">
+
+          <!-- Image -->
+          <div class="relative h-56 overflow-hidden">
+            <img 
+              src="<%= home.homeImage %>" 
+              alt="<%= home.houseName %>" 
+              class="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+            />
+            <div class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
+              Rs <%= home.price %>/night
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="p-6">
+
+            <h3 class="text-lg font-bold text-gray-900 mb-2 truncate">
+              <%= home.houseName %>
+            </h3>
+
+            <p class="text-gray-600 text-sm mb-3 flex items-center">
+              <svg class="w-4 h-4 text-red-500 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 
+                10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 
+                8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 
+                1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 
+                1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 
+                1.5-1.5S9.33 8 8.5 8 7 8.67 7 
+                9.5s.67 1.5 1.5 1.5zm3.5 
+                6.5c2.33 0 4.31-1.46 
+                5.11-3.5H6.89c.8 2.04 
+                2.78 3.5 5.11 3.5z"/>
+              </svg>
+              <%= home.location %>
+            </p>
+
+            <!-- Divider -->
+            <div class="h-px bg-gray-200 mb-4"></div>
+
+            <!-- Rating + Remove Button -->
+            <div class="flex justify-between items-center">
+
+              <!-- Rating -->
+              <div class="flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                     viewBox="0 0 24 24" 
+                     fill="currentColor" 
+                     class="w-5 h-5 text-yellow-400">
+                  <path fill-rule="evenodd" 
+                        d="M10.788 3.21c.448-1.077 
+                        1.976-1.077 2.424 0l2.082 
+                        5.007 5.404.433c1.164.093 
+                        1.636 1.545.749 2.305l-4.117 
+                        3.527 1.257 5.273c.271 
+                        1.136-.964 2.033-1.96 
+                        1.425L12 18.354 7.373 
+                        21.18c-.996.608-2.231-.29-1.96-1.425
+                        l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305
+                        l5.404-.433 2.082-5.006z" 
+                        clip-rule="evenodd" />
+                </svg>
+                <span class="text-gray-900 font-semibold"><%= home.rating %></span>
+              </div>
+
+              <!-- Remove Button -->
+              <form action="favourites/delete-home/<%= home._id %>" method="POST">
+                <button 
+                  class="bg-gradient-to-r from-red-500 to-orange-500 
+                         hover:from-red-600 hover:to-orange-600 
+                         text-white font-bold py-2 px-4 rounded-lg 
+                         shadow-md hover:shadow-lg transition duration-300">
+                  Remove
+                </button>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+  </main>
+</body>
+</html>

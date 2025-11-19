@@ -1,0 +1,130 @@
+
+<%- include('../partials/head') %>
+</head>
+
+<body class="bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 min-h-screen">
+  <%- include('../partials/nav') %>
+
+  <main class="flex items-center justify-center px-4 py-8 min-h-[calc(100vh-100px)]">
+    <div class="w-full max-w-2xl">
+      <!-- Card Container -->
+      <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+
+        <!-- Header Section -->
+        <div class="bg-gradient-to-r from-red-500 via-red-500 to-orange-500 px-8 py-12 text-center relative">
+          <div class="absolute top-3 right-3 text-4xl opacity-20">🏠</div>
+          <h1 class="text-3xl font-bold text-white mb-2"><%= editing ? "Edit" : "Register"%> Your Home</h1>
+          <p class="text-red-100 text-sm">Share your property with travelers around the world</p>
+        </div>
+
+        <!-- Form Container -->
+        <div class="p-8 space-y-4">
+          <form action="/host/<%= editing ? "edit-home" : "add-home"%>" method="POST" class="space-y-4" enctype = "multipart/form-data">
+            <input type="hidden" name="id" value="<%= editing ? home._id : ''%>">
+
+            <!-- House Name -->
+            <div>
+              <label class="text-xs font-semibold text-gray-700 block mb-1.5">House Name</label>
+              <input
+                type="text"
+                name="houseName"
+                value="<%= editing ? home.houseName : ''%>"
+                placeholder="e.g., Cozy Beach House"
+                class="w-full px-4 py-2.5 text-sm border-2 border-gray-200 rounded-lg 
+                       focus:outline-none focus:border-red-500 focus:ring-0 bg-gray-50 hover:bg-white transition"
+                required
+              />
+            </div>
+
+            <!-- Price -->
+            <div>
+              <label class="text-xs font-semibold text-gray-700 block mb-1.5">Price Per Night</label>
+              <input
+                type="text"
+                name="price"
+                value="<%= editing ? home.price : ''%>"
+                placeholder="$99"
+                class="w-full px-4 py-2.5 text-sm border-2 border-gray-200 rounded-lg 
+                       focus:outline-none focus:border-red-500 focus:ring-0 bg-gray-50 hover:bg-white transition"
+                required
+              />
+            </div>
+
+            <!-- Location -->
+            <div>
+              <label class="text-xs font-semibold text-gray-700 block mb-1.5">Location</label>
+              <input
+                type="text"
+                name="location"
+                value="<%= editing ? home.location : ''%>"
+                placeholder="City, Country"
+                class="w-full px-4 py-2.5 text-sm border-2 border-gray-200 rounded-lg 
+                       focus:outline-none focus:border-red-500 focus:ring-0 bg-gray-50 hover:bg-white transition"
+                required
+              />
+            </div>
+
+            <!-- Rating -->
+            <div>
+              <label class="text-xs font-semibold text-gray-700 block mb-1.5">Rating</label>
+              <input
+                type="text"
+                name="rating"
+                value="<%= editing ? home.rating : ''%>"
+                placeholder="4.5"
+                class="w-full px-4 py-2.5 text-sm border-2 border-gray-200 rounded-lg 
+                       focus:outline-none focus:border-red-500 focus:ring-0 bg-gray-50 hover:bg-white transition"
+              />
+            </div>
+
+            <!-- Image -->
+            <div>
+              <label class="text-xs font-semibold text-gray-700 block mb-1.5">Home Image</label>
+              <input
+                type="file"
+                accept="image/jpg, image/jpeg, image/png"
+                name="homeImage"
+                class="w-full px-4 py-2.5 text-sm border-2 border-gray-200 rounded-lg 
+                       focus:outline-none focus:border-red-500 focus:ring-0 bg-gray-50 hover:bg-white transition"
+              />
+            </div>
+
+            <!-- PDF File -->
+            <div>
+              <label class="text-xs font-semibold text-gray-700 block mb-1.5">Home Brochure</label>
+              <input
+                type="file"
+                accept="application/pdf"
+                name="homeBrochurePath"
+                class="w-full px-4 py-2.5 text-sm border-2 border-gray-200 rounded-lg 
+                       focus:outline-none focus:border-red-500 focus:ring-0 bg-gray-50 hover:bg-white transition"
+              />
+            </div>
+
+            <!-- Description -->
+            <div>
+              <label class="text-xs font-semibold text-gray-700 block mb-1.5">Description</label>
+              <textarea
+                name="description"
+                placeholder="Tell guests about your amazing property..."
+                rows="5"
+                class="w-full px-4 py-2.5 text-sm border-2 border-gray-200 rounded-lg 
+                       focus:outline-none focus:border-red-500 focus:ring-0 bg-gray-50 hover:bg-white transition resize-none"
+                required
+              ><%= editing ? home.description : ''%></textarea>
+            </div>
+
+            
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-bold py-3 rounded-lg text-base shadow-lg hover:shadow-xl transform transition-all duration-200 active:scale-95 mt-6">
+              <%= editing ? "Update Home" : "Add Home"%>
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</body>
+</html>
