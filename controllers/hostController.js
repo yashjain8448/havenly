@@ -102,14 +102,6 @@ exports.postEditHome = (req, res, next) => {
 
       // update brochure
       if (newBrochure) {
-        const oldBrochure = home.homeBrochurePath;
-        if (oldBrochure && fs.existsSync(oldBrochure)) {
-          try {
-            fs.unlinkSync(oldBrochure);
-          } catch (err) {
-            console.log("Delete old brochure error:", err);
-          }
-        }
         home.homeBrochurePath = newBrochure.path;
       }
 

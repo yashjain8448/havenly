@@ -32,24 +32,22 @@ app.set("views", "Views");
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
-
-    // Detect file type
     const isPDF = file.mimetype === "application/pdf";
 
     return {
+      // Folder selection
       folder: isPDF ? "Havenly/Brochures" : "Havenly/Images",
-      
-      // IMPORTANT: PDFs must be 'raw', images remain 'image'
+
+      // PDFs must be "raw"
       resource_type: isPDF ? "raw" : "image",
 
-      // Remove accidental double-extension
-      public_id: `${Date.now()}_${file.originalname.replace(/\.[^/.]+$/, "")}`,
+      // Prevent double extension
+      public_id: `${Date.now()}-${file.originalname.replace(/\.[^/.]+$/, "")}`,
 
-      // Set format correctly
-      format: isPDF ? "pdf" : file.mimetype.split("/")[1],
     };
   },
 });
+
 
 
 
