@@ -4,6 +4,9 @@ const Home = require("../models/homes");
 const fs = require("fs");
 
 exports.getAddHome = (req, res, next) => {
+  if(req.session.isLoggedIn === false){
+    return res.redirect('/auth/login');
+  }
   res.render("host/editHome", {
     pageTitle: "Add Home",
     currentPage: "Add Home",
@@ -14,6 +17,11 @@ exports.getAddHome = (req, res, next) => {
 };
 
 exports.getHostHomes = (req, res, next) => {
+
+  if(req.session.isLoggedIn === false){
+    return res.redirect('/auth/login');
+  }
+
   // find is expecting a callback so we are passsing a function
   // which need an array
   Home.find().then((registeredHomes) => {
@@ -59,6 +67,11 @@ exports.postAddHome = (req, res, next) => {
 };
 
 exports.getEditHome = (req, res, next) => {
+  // Check if user is logged in
+  if(req.session.isLoggedIn === false){
+    return res.redirect('/auth/login');
+  }
+
   const homeId = req.params.homeId;
   const editing = req.query.editing === "true";
 

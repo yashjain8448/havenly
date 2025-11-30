@@ -3,6 +3,11 @@ const User = require("../models/user");
 
 // Handling Home GET request
 exports.getHomes = (req, res, next) => {
+  
+  if(req.session.isLoggedIn === false){
+    return res.redirect('/auth/login');
+  }
+
   Home.find().then((registeredHomes) => {
     res.render("store/homeList", {
       registeredHomes: registeredHomes,
@@ -41,6 +46,11 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getBookings = (req, res, next) => {
+
+  if(req.session.isLoggedIn === false){
+    return res.redirect('/auth/login');
+  }
+
   res.render("store/bookings", {
     pageTitle: "My Bookings",
     currentPage: "bookings",
@@ -50,6 +60,11 @@ exports.getBookings = (req, res, next) => {
 };
 
 exports.getFavourites = async (req, res, next) => {
+
+  if(req.session.isLoggedIn === false){
+    return res.redirect('/auth/login');
+  }
+
   // populate() tells Mongoose to replace the referenced ObjectId (homeId) with the actual document it points to in another collection (likely Home).
 
   const userId = req.session.user._id;
@@ -65,6 +80,11 @@ exports.getFavourites = async (req, res, next) => {
 };
 
 exports.getHomeDetails = (req, res, next) => {
+
+  if(req.session.isLoggedIn === false){
+    return res.redirect('/auth/login');
+  }
+
   const homeID = req.params.homeID; // getting homeID from the path
   Home.findById(homeID).then((home) => {
     if (!home) {

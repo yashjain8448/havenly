@@ -33,6 +33,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
     const isPDF = file.mimetype === "application/pdf";
+    const ext = path.extname(file.originalname);
 
     return {
       // Folder selection
@@ -42,7 +43,7 @@ const storage = new CloudinaryStorage({
       resource_type: isPDF ? "raw" : "image",
 
       // Prevent double extension
-      public_id: `${Date.now()}-${file.originalname.replace(/\.[^/.]+$/, "")}`,
+      public_id: `${Date.now()}-${file.originalname.replace(/\.[^/.]+$/, "")}${ext}`,
 
     };
   },
