@@ -29,25 +29,27 @@ app.set("view engine", "ejs"); // to embeed ejs into our project
 app.set("views", "Views");
 
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
+  cloudinary,
   params: async (req, file) => {
-    const isPDF = file.mimetype === "application/pdf";
-    const ext = path.extname(file.originalname);
+
+    const isPDF =
+      file.mimetype === "application/pdf" ||
+      file.mimetype === "application/octet-stream" ||
+      file.mimetype === "application/x-pdf";
+
     const cleanName = file.originalname
-      .replace(/\.[^/.]+$/, "") // remove extension
-      .replace(/[^a-zA-Z0-9_-]/g, ""); // keep only safe chars
+      .replace(/\.[^/.]+$/, "")
+      .replace(/[^a-zA-Z0-9_-]/g, "");
 
     return {
-      // Folder selection
       folder: isPDF ? "Havenly/Brochures" : "Havenly/Images",
-
-      // PDFs must be "raw"
       resource_type: isPDF ? "raw" : "image",
-
-      public_id: `${Date.now()}-${cleanName}${ext}`,
+      public_id: `${Date.now()}-${cleanName}`,
+      format: isPDF ? "pdf" : undefined,   // important for raw files
     };
   },
 });
+
 
 // to ensure on backend as well that only images are uploaded
 const fileFilter = (req, file, cb) => {
