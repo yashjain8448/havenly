@@ -8,7 +8,6 @@ const multer = require("multer");
 const cloudinary = require("./config/cloudinary");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
-
 // Local Modules
 const hostRouter = require("./routes/hostRouter");
 const storeRouter = require("./routes/storeRouter");
@@ -34,6 +33,9 @@ const storage = new CloudinaryStorage({
   params: async (req, file) => {
     const isPDF = file.mimetype === "application/pdf";
     const ext = path.extname(file.originalname);
+    const cleanName = file.originalname
+      .replace(/\.[^/.]+$/, "") // remove extension
+      .replace(/[^a-zA-Z0-9_-]/g, ""); // keep only safe chars
 
     return {
       // Folder selection
@@ -42,15 +44,10 @@ const storage = new CloudinaryStorage({
       // PDFs must be "raw"
       resource_type: isPDF ? "raw" : "image",
 
-      // Prevent double extension
-      public_id: `${Date.now()}-${file.originalname.replace(/\.[^/.]+$/, "")}${ext}`,
-
+      public_id: `${Date.now()}-${cleanName}${ext}`,
     };
   },
 });
-
-
-
 
 // to ensure on backend as well that only images are uploaded
 const fileFilter = (req, file, cb) => {

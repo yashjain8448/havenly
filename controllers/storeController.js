@@ -4,7 +4,7 @@ const User = require("../models/user");
 // Handling Home GET request
 exports.getHomes = (req, res, next) => {
   
-  if(req.session.isLoggedIn === false){
+  if(!req.session.isLoggedIn){
     return res.redirect('/auth/login');
   }
 
@@ -47,7 +47,7 @@ exports.getIndex = (req, res, next) => {
 
 exports.getBookings = (req, res, next) => {
 
-  if(req.session.isLoggedIn === false){
+  if(!req.session.isLoggedIn){
     return res.redirect('/auth/login');
   }
 
@@ -61,7 +61,7 @@ exports.getBookings = (req, res, next) => {
 
 exports.getFavourites = async (req, res, next) => {
 
-  if(req.session.isLoggedIn === false){
+  if(!req.session.isLoggedIn){
     return res.redirect('/auth/login');
   }
 
@@ -81,7 +81,7 @@ exports.getFavourites = async (req, res, next) => {
 
 exports.getHomeDetails = (req, res, next) => {
 
-  if(req.session.isLoggedIn === false){
+  if(!req.session.isLoggedIn){
     return res.redirect('/auth/login');
   }
 

@@ -4,7 +4,7 @@ const Home = require("../models/homes");
 const fs = require("fs");
 
 exports.getAddHome = (req, res, next) => {
-  if(req.session.isLoggedIn === false){
+  if(!req.session.isLoggedIn){
     return res.redirect('/auth/login');
   }
   res.render("host/editHome", {
@@ -18,7 +18,7 @@ exports.getAddHome = (req, res, next) => {
 
 exports.getHostHomes = (req, res, next) => {
 
-  if(req.session.isLoggedIn === false){
+  if(!req.session.isLoggedIn){
     return res.redirect('/auth/login');
   }
 
@@ -68,7 +68,7 @@ exports.postAddHome = (req, res, next) => {
 
 exports.getEditHome = (req, res, next) => {
   // Check if user is logged in
-  if(req.session.isLoggedIn === false){
+  if(!req.session.isLoggedIn){
     return res.redirect('/auth/login');
   }
 
