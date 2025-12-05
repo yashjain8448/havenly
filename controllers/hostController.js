@@ -5,7 +5,7 @@ const fs = require("fs");
 
 exports.getAddHome = (req, res, next) => {
   if(!req.session.isLoggedIn){
-    return res.redirect('/auth/login');
+    return res.redirect('/login');
   }
   res.render("host/editHome", {
     pageTitle: "Add Home",
@@ -19,7 +19,7 @@ exports.getAddHome = (req, res, next) => {
 exports.getHostHomes = (req, res, next) => {
 
   if(!req.session.isLoggedIn){
-    return res.redirect('/auth/login');
+    return res.redirect('/login');
   }
 
   // find is expecting a callback so we are passsing a function
@@ -69,7 +69,7 @@ exports.postAddHome = (req, res, next) => {
 exports.getEditHome = (req, res, next) => {
   // Check if user is logged in
   if(!req.session.isLoggedIn){
-    return res.redirect('/auth/login');
+    return res.redirect('/login');
   }
 
   const homeId = req.params.homeId;

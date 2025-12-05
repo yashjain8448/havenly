@@ -5,7 +5,7 @@ const User = require("../models/user");
 exports.getHomes = (req, res, next) => {
   
   if(!req.session.isLoggedIn){
-    return res.redirect('/auth/login');
+    return res.redirect('/login');
   }
 
   Home.find().then((registeredHomes) => {
@@ -48,7 +48,7 @@ exports.getIndex = (req, res, next) => {
 exports.getBookings = async (req, res, next) => {
 
   if(!req.session.isLoggedIn){
-    return res.redirect('/auth/login');
+    return res.redirect('/login');
   }
 
   try {
@@ -75,7 +75,7 @@ exports.getBookings = async (req, res, next) => {
 exports.getFavourites = async (req, res, next) => {
 
   if(!req.session.isLoggedIn){
-    return res.redirect('/auth/login');
+    return res.redirect('/login');
   }
 
   // populate() tells Mongoose to replace the referenced ObjectId (homeId) with the actual document it points to in another collection (likely Home).
@@ -95,7 +95,7 @@ exports.getFavourites = async (req, res, next) => {
 exports.getHomeDetails = (req, res, next) => {
 
   if(!req.session.isLoggedIn){
-    return res.redirect('/auth/login');
+    return res.redirect('/login');
   }
 
   const homeID = req.params.homeID; // getting homeID from the path
@@ -130,7 +130,7 @@ exports.postDeleteFromFavourites = async (req, res, next) => {
 
 exports.postAddBooking = async (req, res, next) => {
   if (!req.session.isLoggedIn) {
-    return res.redirect("/auth/login");
+    return res.redirect("/login");
   }
 
   const userId = req.session.user._id;
@@ -161,7 +161,7 @@ exports.postAddBooking = async (req, res, next) => {
 exports.getBookingSuccess = async (req, res, next) => {
 
   if(!req.session.isLoggedIn){
-    return res.redirect('/auth/login');
+    return res.redirect('/login');
   } 
 
   const home = req.session.latestHome;
