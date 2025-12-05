@@ -1,5 +1,6 @@
 const Home = require("../models/homes");
 const User = require("../models/user");
+const { sendBookingEmail } = require("../utils/sendEmail");
 
 // Handling Home GET request
 exports.getHomes = (req, res, next) => {
@@ -115,27 +116,36 @@ exports.postDeleteFromFavourites = async (req, res, next) => {
   res.redirect("/favourites");
 };
 
-exports.postAddBooking = (req, res, next) => {
-
-  if(!req.session.isLoggedIn){
-    return res.redirect('/auth/login');
+exports.postAddBooking = async (req, res, next) => {
+  if (!req.session.isLoggedIn) {
+    return res.redirect("/auth/login");
   }
 
   const userId = req.session.user._id;
   const homeId = req.body.homeId;
 
-  User.findById(userId).then((user) => {  
-    // if not already booked, then only add
+  try {
+    const user = await User.findById(userId);
+    const home = await Home.findById(homeId);
+
     if (!user.bookedHomes.includes(homeId)) {
       user.bookedHomes.push(homeId);
-      user.save().then(() => {
-        res.redirect(`/bookings-success?homeId=${homeId}`);
-      });
+      await user.save();
+
+      sendBookingEmail(user.email, user.name, home);
+
+      // Store home for success page
+      req.session.latestHome = home;
+      
+      return res.redirect("/bookings-success");
     } else {
-      res.redirect("/bookings");
+      return res.redirect("/bookings");
     }
 
-});
+  } catch (error) {
+    console.log(error);
+    res.redirect("/");
+  }
 };
 
 exports.getBookingSuccess = async (req, res, next) => {
@@ -143,8 +153,8 @@ exports.getBookingSuccess = async (req, res, next) => {
   if(!req.session.isLoggedIn){
     return res.redirect('/auth/login');
   } 
-  const homeId = req.query.homeId;
-  const home =  await Home.findById(homeId);
+  
+  const home = req.session.latestHome;
 
   res.render("store/bookingSuccess", {
     pageTitle: "Booking Successful",
