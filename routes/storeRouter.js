@@ -16,5 +16,7 @@ storeRouter.post(
   "/favourites/delete-home/:homeId",
   storeController.postDeleteFromFavourites
 );
+storeRouter.post("/bookings", storeController.postAddBooking);
+storeRouter.get("/bookings-success", storeController.getBookingSuccess);
 
 module.exports = storeRouter;

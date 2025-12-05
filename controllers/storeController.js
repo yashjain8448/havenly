@@ -115,3 +115,39 @@ exports.postDeleteFromFavourites = async (req, res, next) => {
   res.redirect("/favourites");
 };
 
+exports.postAddBooking = (req, res, next) => {
+
+  if(!req.session.isLoggedIn){
+    return res.redirect('/auth/login');
+  }
+
+  const userId = req.session.user._id;
+  const homeId = req.body.homeId;
+
+  User.findById(userId).then((user) => {  
+    // if not already booked, then only add
+    if (!user.bookedHomes.includes(homeId)) {
+      user.bookedHomes.push(homeId);
+      user.save().then(() => {
+        res.redirect("/bookings-success");
+      });
+    } else {
+      res.redirect("/bookings");
+    }
+
+});
+};
+
+exports.getBookingSuccess = (req, res, next) => {
+
+  if(!req.session.isLoggedIn){
+    return res.redirect('/auth/login');
+  } 
+
+  res.render("store/bookingSuccess", {
+    pageTitle: "Booking Successful",
+    currentPage: "bookings",
+    isLoggedIn: req.session.isLoggedIn,
+    user: req.session.user,
+  });
+}

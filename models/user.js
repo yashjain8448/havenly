@@ -28,6 +28,13 @@ const userSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Home",
   }],
+
+   bookedHomes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Home"
+    }
+  ]
 });
 
 module.exports = mongoose.model("User", userSchema);
