@@ -129,7 +129,7 @@ exports.postAddBooking = (req, res, next) => {
     if (!user.bookedHomes.includes(homeId)) {
       user.bookedHomes.push(homeId);
       user.save().then(() => {
-        res.redirect("/bookings-success");
+        res.redirect(`/bookings-success?homeId=${homeId}`);
       });
     } else {
       res.redirect("/bookings");
@@ -138,16 +138,19 @@ exports.postAddBooking = (req, res, next) => {
 });
 };
 
-exports.getBookingSuccess = (req, res, next) => {
+exports.getBookingSuccess = async (req, res, next) => {
 
   if(!req.session.isLoggedIn){
     return res.redirect('/auth/login');
   } 
+  const homeId = req.query.homeId;
+  const home =  await Home.findById(homeId);
 
   res.render("store/bookingSuccess", {
     pageTitle: "Booking Successful",
     currentPage: "bookings",
     isLoggedIn: req.session.isLoggedIn,
     user: req.session.user,
+    homeDetails: home
   });
 }
