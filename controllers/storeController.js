@@ -1,6 +1,5 @@
 const Home = require("../models/homes");
 const User = require("../models/user");
-const { sendBookingEmail } = require("../utils/sendEmail");
 
 // Handling Home GET request
 exports.getHomes = (req, res, next) => {
@@ -46,18 +45,31 @@ exports.getIndex = (req, res, next) => {
   });
 };
 
-exports.getBookings = (req, res, next) => {
+exports.getBookings = async (req, res, next) => {
 
   if(!req.session.isLoggedIn){
     return res.redirect('/auth/login');
   }
 
-  res.render("store/bookings", {
-    pageTitle: "My Bookings",
-    currentPage: "bookings",
-    isLoggedIn: req.isLoggedIn,
-    user: req.session.user,
-  });
+  try {
+    const userId = req.session.user._id;
+
+    // Fetch user + populate booked homes
+    const user = await User.findById(userId).populate("bookedHomes");
+
+    const bookedHomes = user.bookedHomes || [];
+
+    res.render("store/bookings", {
+      pageTitle: "My Bookings",
+      currentPage: "bookings",
+      isLoggedIn: req.session.isLoggedIn,
+      user: req.session.user,
+      bookedHomes: bookedHomes,
+    });
+  } catch (err) {
+    console.log(err);
+    res.redirect("/");
+  }
 };
 
 exports.getFavourites = async (req, res, next) => {
@@ -132,8 +144,6 @@ exports.postAddBooking = async (req, res, next) => {
       user.bookedHomes.push(homeId);
       await user.save();
 
-      sendBookingEmail(user.email, user.name, home);
-
       // Store home for success page
       req.session.latestHome = home;
       
@@ -153,7 +163,7 @@ exports.getBookingSuccess = async (req, res, next) => {
   if(!req.session.isLoggedIn){
     return res.redirect('/auth/login');
   } 
-  
+
   const home = req.session.latestHome;
 
   res.render("store/bookingSuccess", {

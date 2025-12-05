@@ -8,7 +8,7 @@
   <div class="bg-gradient-to-b from-red-500 to-orange-500 text-white py-16 px-4">
     <div class="container mx-auto text-center">
       <h1 class="text-5xl font-bold mb-3 drop-shadow-lg">My Bookings</h1>
-      <p class="text-2xl text-red-100 drop-shadow-md">Bookings will appear here</p>
+      <p class="text-2xl text-red-100 drop-shadow-md">All your reserved homes</p>
     </div>
   </div>
 
@@ -17,14 +17,66 @@
 
     <!-- Section Title -->
     <div class="mb-12">
-      <h2 class="text-4xl font-bold text-gray-900 mb-2 text-center">Your Bookings</h2>
-      <p class="text-center text-gray-600 text-lg">All your reservations in one place</p>
+      <h2 class="text-4xl font-bold text-gray-900 mb-2 text-center">Your Booked Homes</h2>
+      <p class="text-center text-gray-600 text-lg">Homes you have successfully booked</p>
     </div>
 
-    <!-- Booking Placeholder Box -->
-    <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-10 max-w-3xl mx-auto text-center">
-      <p class="text-gray-700 text-xl">You have not booked any home yet!</p>
-    </div>
+    <% if (bookedHomes.length === 0) { %>
+
+      <!-- If no bookings -->
+      <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-10 max-w-3xl mx-auto text-center">
+        <p class="text-gray-700 text-xl">You have not booked any home yet!</p>
+      </div>
+
+    <% } else { %>
+
+      <!-- Bookings Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <% bookedHomes.forEach(home => { %>
+          <div class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden group border border-gray-100">
+            
+            <!-- Image -->
+            <div class="relative overflow-hidden h-56">
+              <img 
+                src="<%= home.homeImage %>" 
+                alt="<%= home.houseName %>" 
+                class="w-full h-full object-cover group-hover:scale-110 transition duration-300"
+              />
+              <div class="absolute top-3 right-3 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
+                Booked
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6 space-y-4">
+
+              <h3 class="text-lg font-bold text-gray-900"><%= home.houseName %></h3>
+
+              <p class="text-gray-600 text-sm flex items-center">
+                <svg class="w-4 h-4 text-red-500 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                </svg>
+                <%= home.location %>
+              </p>
+
+              <div class="flex items-center gap-2 pb-4 border-b border-gray-200">
+                <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span class="text-gray-900 font-bold"><%= home.rating %></span>
+              </div>
+
+              <a href="/homes/<%=home._id%>"
+                class="block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg text-center transition shadow-md hover:shadow-lg active:scale-95">
+                View Home
+              </a>
+
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+    <% } %>
 
   </main>
 
