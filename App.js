@@ -16,6 +16,7 @@ const errorController = require("./controllers/error");
 const { default: mongoose } = require("mongoose");
 const authRouter = require("./routes/authRouter");
 const { getRandomString } = require("./utils/getRandomStringFunction");
+const aiRouter = require("./routes/aiRouter");
 
 const app = express();
 const url = process.env.MONGO_URI;
@@ -112,6 +113,7 @@ app.use((req, res, next) => {
 app.use(storeRouter);
 app.use("/host", hostRouter);
 app.use(authRouter);
+app.use(aiRouter);
 
 app.use(errorController.getPageNotFound);
 
