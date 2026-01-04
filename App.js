@@ -70,7 +70,7 @@ const multerOptions = {
   storage: storage,
   fileFilter: fileFilter,
 };
-
+app.use(express.json());
 // to parse the request
 app.use(express.urlencoded());
 app.use(express.static(path.join(rootDir, "public"))); // to make public folder files accessible for browser
