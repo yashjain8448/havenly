@@ -173,7 +173,7 @@
     aiBtn.addEventListener("click", async () => {
       hint.classList.remove("hidden");
 
-      const res = await fetch("/ai/suggest-price", {
+      const res = await fetch("/suggest-price", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
