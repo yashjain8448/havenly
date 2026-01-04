@@ -38,16 +38,39 @@
 
             <!-- Price -->
             <div>
-              <label class="text-xs font-semibold text-gray-700 block mb-1.5">Price Per Night</label>
-              <input
-                type="text"
-                name="price"
-                value="<%= editing ? home.price : ''%>"
-                placeholder="$99"
-                class="w-full px-4 py-2.5 text-sm border-2 border-gray-200 rounded-lg 
-                       focus:outline-none focus:border-red-500 focus:ring-0 bg-gray-50 hover:bg-white transition"
-                required
-              />
+              <label class="text-xs font-semibold text-gray-700 block mb-1.5">
+                Price Per Night
+              </label>
+
+              <div class="flex gap-2">
+                <input
+                  type="text"
+                  id="priceInput"
+                  name="price"
+                  value="<%= editing ? home.price : '' %>"
+                  placeholder="₹2500"
+                  class="flex-1 px-4 py-2.5 text-sm border-2 rounded-lg bg-gray-50 focus:border-red-500"
+                  required
+                />
+
+                <button
+                  type="button"
+                  id="aiPriceBtn"
+                  disabled
+                  class="px-4 py-2.5 text-sm font-semibold text-white rounded-lg
+                         bg-gray-300 cursor-not-allowed transition"
+                >
+                  🤖 Suggest
+                </button>
+              </div>
+
+              <p id="priceHint" class="text-xs text-gray-500 mt-1 hidden">
+                AI is analyzing similar homes...
+              </p>
+
+              <p class="text-xs text-gray-400 mt-1">
+                Enter location & description to enable AI pricing
+              </p>
             </div>
 
             <!-- Location -->
@@ -126,5 +149,44 @@
       </div>
     </div>
   </main>
+
+  <script>
+    const aiBtn = document.getElementById("aiPriceBtn");
+    const priceInput = document.getElementById("priceInput");
+    const locationInput = document.querySelector('input[name="location"]');
+    const descriptionInput = document.querySelector('textarea[name="description"]');
+    const hint = document.getElementById("priceHint");
+
+    function toggleAIBtn() {
+      const enabled = locationInput.value.trim() && descriptionInput.value.trim();
+
+      aiBtn.disabled = !enabled;
+
+      aiBtn.className = enabled
+        ? "px-4 py-2.5 text-sm font-semibold text-white rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 transition"
+        : "px-4 py-2.5 text-sm font-semibold text-white rounded-lg bg-gray-300 cursor-not-allowed transition";
+    }
+
+    locationInput.addEventListener("input", toggleAIBtn);
+    descriptionInput.addEventListener("input", toggleAIBtn);
+
+    aiBtn.addEventListener("click", async () => {
+      hint.classList.remove("hidden");
+
+      const res = await fetch("/ai/suggest-price", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          location: locationInput.value,
+          rating: document.querySelector('input[name="rating"]').value,
+          description: descriptionInput.value
+        })
+      });
+
+      const data = await res.json();
+      priceInput.value = data.suggestedPrice;
+      hint.classList.add("hidden");
+    });
+  </script>
 </body>
 </html>
