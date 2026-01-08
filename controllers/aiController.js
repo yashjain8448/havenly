@@ -54,7 +54,7 @@ exports.suggestPrice = async (req, res) => {
 
     // Calling openAI
     const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
+        model: "gemini-2.5-flash",
         messages: [{ role: "user", content: prompt }], // this is not the havenly user
         temperature: 0.5
     });
