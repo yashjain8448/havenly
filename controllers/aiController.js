@@ -13,6 +13,7 @@ exports.suggestPrice = async (req, res) => {
     }).limit(5); // finding only 5 similar homes
 
     let SYSTEM_PROMPT = "";
+    let user_prompt = "";
 
     if (similarHomes.length > 0) {
       const prices = similarHomes.map((home) => home.price);
@@ -21,15 +22,29 @@ exports.suggestPrice = async (req, res) => {
       const maxPrice = Math.max(...prices);
 
       SYSTEM_PROMPT = SIMILAR_SYSTEM_PROMPT
+      user_prompt = `
+      Input: Location: ${location}
+      Description: ${description}
+      Host Rating: ${rating}
+      Min Price: ₹${minPrice}
+      Max Price: ₹${maxPrice}
+      Average Price: ₹${Math.round(avgPrice)}
+      `
 
     } else {
       SYSTEM_PROMPT = ZERO_SIMILAR_SYSTEM_PROMPT;
+
+      user_prompt = `
+      Input: Location: ${location}
+      Description: ${description}
+      Host Rating: ${rating}
+      `
     }
 
     // Calling openAI
     const response = await openai.chat.completions.create({
       model: "gemini-2.5-flash",
-      messages: [{ role: "system", content: SYSTEM_PROMPT }], // this is not the havenly user
+      messages: [{ role: "system", content: SYSTEM_PROMPT }, { role: "user", content: user_prompt }], // this is not the havenly user
       temperature: 0.5,
     });
 
