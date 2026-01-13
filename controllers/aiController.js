@@ -1,5 +1,7 @@
 const Home = require("../models/homes");
 const openai = require("../utils/openai");
+const { ZERO_SIMILAR_SYSTEM_PROMPT, SIMILAR_SYSTEM_PROMPT } = require("../utils/systemPrompts");
+
 
 exports.suggestPrice = async (req, res) => {
   try {
@@ -10,7 +12,7 @@ exports.suggestPrice = async (req, res) => {
       location: new RegExp(location, "i"),
     }).limit(5); // finding only 5 similar homes
 
-    let prompt = "";
+    let SYSTEM_PROMPT = "";
 
     if (similarHomes.length > 0) {
       const prices = similarHomes.map((home) => home.price);
@@ -18,45 +20,17 @@ exports.suggestPrice = async (req, res) => {
       const minPrice = Math.min(...prices);
       const maxPrice = Math.max(...prices);
 
-      prompt = `
-        You are an Smart pricing assistant which suggests competitive nightly prices for Havenly listings.
+      SYSTEM_PROMPT = SIMILAR_SYSTEM_PROMPT
 
-        Market data:
-        - Location: ${location}
-        - Average price: ₹${avgPrice}
-        - Price range: ₹${minPrice} - ₹${maxPrice}
-
-        Host details:
-        - Rating: ${rating}
-        - Description: "${description}"
-
-        Suggest a competitive nightly price in INR.
-        Return ONLY a number.
-        `;
-    }
-
-    else {
-        prompt = `
-        You are an Smart pricing assistant which suggests competitive nightly prices for Havenly listings.
-        There is no existing pricing data for this location.
-
-        Host details:
-        - Location: ${location}
-        - Rating: ${rating}
-        - Description: "${description}"
-
-        Based on typical hotel and homestay pricing in this location,
-        suggest a reasonable nightly price in INR.
-
-        Return ONLY a number.
-        `;
+    } else {
+      SYSTEM_PROMPT = ZERO_SIMILAR_SYSTEM_PROMPT;
     }
 
     // Calling openAI
     const response = await openai.chat.completions.create({
-        model: "gemini-2.5-flash",
-        messages: [{ role: "user", content: prompt }], // this is not the havenly user
-        temperature: 0.5
+      model: "gemini-2.5-flash",
+      messages: [{ role: "system", content: SYSTEM_PROMPT }], // this is not the havenly user
+      temperature: 0.5,
     });
 
     let suggestedPrice = response.choices[0].message.content;
@@ -64,11 +38,10 @@ exports.suggestPrice = async (req, res) => {
     // removes any non-digit characters
 
     if (!suggestedPrice || isNaN(suggestedPrice)) {
-        suggestedPrice = 2500; // fallback price
+      suggestedPrice = 2500; // fallback price
     }
 
     res.json({ suggestedPrice });
-
   } catch (error) {
     console.log("Error in suggestPrice:", error);
     res.status(500).json({ suggestedPrice: 2500 });
