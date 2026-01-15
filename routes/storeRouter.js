@@ -19,4 +19,6 @@ storeRouter.post(
 storeRouter.post("/bookings", storeController.postAddBooking);
 storeRouter.get("/bookings-success", storeController.getBookingSuccess);
 
+storeRouter.get('/download/brochure/:homeId', storeController.downloadBrochure);
+
 module.exports = storeRouter;

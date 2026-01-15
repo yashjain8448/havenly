@@ -1,5 +1,6 @@
 const Home = require("../models/homes");
 const User = require("../models/user");
+const axios = require('axios');
 
 // Handling Home GET request
 exports.getHomes = (req, res, next) => {
@@ -174,3 +175,16 @@ exports.getBookingSuccess = async (req, res, next) => {
     homeDetails: home
   });
 }
+
+exports.downloadBrochure = async (req, res) => {
+  const home = await Home.findById(req.params.homeId);
+  if (!home || !home.homeBrochurePath) return res.status(404).send('Not found');
+
+  const fileUrl = home.homeBrochurePath;
+  const fileName = 'Brochure.pdf';
+
+  const response = await axios.get(fileUrl, { responseType: 'stream' });
+  res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
+  res.setHeader('Content-Type', 'application/pdf');
+  response.data.pipe(res);
+};
