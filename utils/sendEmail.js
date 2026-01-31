@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-
+// Function to send booking confirmation email
 exports.sendBookingEmail = async (toEmail, userName, home) => {
   try {
     const transporter = nodemailer.createTransport({
